@@ -1,0 +1,172 @@
+{%extends 'base.html'%}
+{%load static %}
+{%load humanize%}
+{%block content%}
+
+<section id="showcase-inner" class="showcase-search text-white py-5" style="background-attachment: fixed;background-image: url('static/img/building.jpg');">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <form action="{%url 'search'%}">
+            <!-- Form Row 1 -->
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">Keywords</label>
+                <input type="text" name="kwords" class="form-control" value="{{values.kwords}}"
+                placeholder="Keyword !">
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">address</label>
+                <input type="text" name="address" class="form-control" value="{{values.address}}" placeholder="address">
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">city</label>
+                <select name="city" class="form-control">
+                  <option selected="true" disabled="disabled">city (All)</option>
+                        {% if cities %}
+                            {%for oo1,oo2 in cities.items%}
+
+                            <option value="{{oo1}}"
+                            {% if oo1 == values.city%}
+                                selected
+                            {%endif%}
+                            >{{oo2}}</option>
+
+                            {%endfor%}
+                        {%endif%}
+                </select>
+              </div>
+            </div>
+            <!-- Form Row 2 -->
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label class="sr-only">Num_seats</label>
+                <select name="Num_seats" class="form-control">
+                  <option selected="true" disabled="disabled">Num_seats</option>
+                 {%if num_seats%}
+                    {%for ob1,ob2 in num_seats.items%}
+
+                    <option value="{{ob1}}"
+                    {%if ob1 == values.Num_seats%}
+                    selected
+                    {%endif%}
+                    
+                    > {{ob2}} </option>
+                    
+                    {%endfor%}
+                 {%endif%}
+                 
+                </select>
+              </div>
+              
+              
+            </div>
+           
+              <div class="col-md-6 mb-3">
+                <select name="price" class="form-control">
+                  <option selected="true" disabled="disabled">Max Price (All)</option>
+                    {%if prices%}
+                        {%for j1,j2 in prices.items%}
+                        <option value="{{j1}}"
+                        {%if j1 == values.price%}
+                        selected
+                        {%endif%}
+                        
+                        >{{j2}}</option>
+                        {%endfor%}
+                    {%endif%}
+              
+                </select>
+              </div>
+            </div>
+            <!-- <button class="btn btn-secondary btn-block mt-4 active "  type="submit">Submit form</button> -->
+            <!-- <button class="btn btn-secondary btn-block mt-4" name="reset_b" type="reset"> Reset</button> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{%url 'index'%}">
+              <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a href="{%url 'listings'%}">Browse Listings</a>
+          </li>
+          <li class="breadcrumb-item active"> Search Results</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Listings -->
+  <section id="listings" class="py-4">
+    <div class="container">
+      <div class="row">
+
+        {%if que_list%}
+        {%for qo in que_list%}
+
+        <!-- Listing 1 -->
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card listing-preview">
+            <img class="card-img-top" src="{{qo.photo_main.url}}" alt="">
+            <div class="card-img-overlay">
+              <h2>
+                <span class="badge badge-secondary text-white">{{qo.price | intcomma}} <span style="color: rgb(36, 31, 58);">$</span></span>
+              </h2>
+            </div>
+            <div class="card-body">
+              <div class="listing-heading text-center">
+                <h4 class="text-primary">{{qo.title}}</h4>
+                <p>
+                  <i class="fas fa-map-marker text-secondary"></i>{{qo.address}} , {{qo.city}}</p>
+              </div>
+              <hr>
+              <div class="row py-2 text-secondary">
+                <div class="col-6">
+                  <i class="fas fa-th-large"></i> Num_seats: {{qo.NO_seats}}</div>
+                
+                  
+              </div>
+             
+              
+              <hr>
+              <div class="row py-2 text-secondary">
+                <div class="col-12">
+                  <i class="fas fa-user"></i>{{qo.realtor}}</div>
+              </div>
+              <div class="row text-secondary pb-2">
+                <div class="col-6">
+                  <i class="fas fa-clock"></i>{{qo.lsit_date | timesince}} ago</div>
+              </div>
+              <hr>
+              <a href="{%url 'listing' qo.id%}" class="btn btn-primary btn-block">More Info</a>
+            </div>
+          </div>
+        </div>
+
+        {%endfor %}
+        {%endif%}
+        <!-- Listing 2 -->
+     
+        
+        <!-- Listing 6 -->
+        
+        
+
+      </div>
+    </div>
+  </section>
+
+
+
+{%endblock%}
